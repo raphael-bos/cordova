@@ -1,0 +1,21 @@
+html, body{
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.mdc-toolbar a {
+    color: #F0F0F0;
+    text-decoration: none;
+}
+
+.container {
+}
+
+.surface{
+    position: relative;
+  border-radius: 2px;
+  text-align: center;
+  /* Indicate to user element is interactive. */
+  cursor: pointer;
+}
