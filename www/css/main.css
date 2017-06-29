@@ -4,9 +4,18 @@ html, body{
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+    user-select:none;
+}
+
 .mdc-toolbar a {
     color: #F0F0F0;
     text-decoration: none;
+}
+
+.mdc-list-item{
+    cursor: pointer;
 }
 
 .container {
