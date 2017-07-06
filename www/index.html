@@ -44,7 +44,7 @@
       </nav>
     </aside>
 
-    <main class="container mdc-toolbar-fixed-adjust">
+    <!--<main class="container mdc-toolbar-fixed-adjust">
       <nav class="mdc-list">
         <a class="mdc-list-item" data-mdc-auto-init="MDCRipple">
           <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">
@@ -65,27 +65,42 @@
           Data Usage
         </a>
       </nav>
-    </main>
+    </main>-->
 
-    <svg viewBox="0 0 450 400">
-      <path id="lineAB" d="M 100 350 l 150 -300" stroke="red" stroke-width="3" fill="none" />
-        <path id="lineBC" d="M 250 50 l 150 300" stroke="red" stroke-width="3" fill="none" />
-        <path d="M 175 200 l 150 0" stroke="green" stroke-width="3" fill="none" />
-        <path d="M 100 350 q 150 -300 300 0" stroke="blue" stroke-width="5" fill="none" />
-        <!-- Mark relevant points -->
-        <g stroke="black" stroke-width="3" fill="black">
-          <circle id="pointA" cx="100" cy="350" r="3" />
-          <circle id="pointB" cx="250" cy="50" r="3" />
-          <circle id="pointC" cx="400" cy="350" r="3" />
-        </g>
-        <!-- Label the points -->
-        <g font-size="30" font-family="sans-serif" fill="black" stroke="none" text-anchor="middle">
-          <text x="100" y="350" dx="-30">A</text>
-          <text x="250" y="50" dy="-10">B</text>
-          <text x="400" y="350" dx="30">C</text>
-        </g>
-        Sorry, your browser does not support inline SVG.
-    </svg>
+    <script type="text/javascript" src="cordova.js"></script>
+
+    <script type="text/javascript">
+    document.addEventListener('deviceready', () => {
+      const permissions = cordova.plugins.permissions;
+      permissions.requestPermission(permissions.CAMERA, function(){
+        console.warn('Bom!');
+      }, function(){
+        console.warn('Ruim...');
+        });
+     });
+    </script>
+
+    <video width="100%" class="mdc-toolbar-fixed-adjust" autoplay></video>
+
+    <script>
+      var errorCallback = function(e) {
+        console.log('Reeeejected!', e);
+      };
+
+      // Not showing vendor prefixes.
+      var constraints = {video: true};
+
+      navigator.webkitGetUserMedia(constraints, function(localMediaStream) {
+        var video = document.querySelector('video');
+        video.src = window.URL.createObjectURL(localMediaStream);
+
+        // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
+        // See crbug.com/110938.
+        video.onloadedmetadata = function(e) {
+          // Ready to go. Do some stuff.
+        };
+      }, errorCallback);
+    </script>
 
 
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
