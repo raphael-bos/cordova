@@ -8,6 +8,7 @@
           href="node_modules/material-components-web/dist/material-components-web.css">
     <link rel="stylesheet" href="css/icons.css">
     <link rel="stylesheet" href="css/main.css">
+    <script type="text/javascript" src="js/index.js"></script>
   </head>
   <body>
       <header class="mdc-toolbar mdc-toolbar--fixed">
@@ -17,9 +18,7 @@
                 <span class="mdc-toolbar__title">App Híbrido</span>
             </section>
             <section class="mdc-toolbar__section--align-end" role="toolbar">
-                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">file_download</a>
-                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Print this page" alt="Print this page">print</a>
-                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Bookmark this page" alt="Bookmark this page">more_vert</a>
+                <a href="#" class="material-icons mdc-toolbar__icon" aria-label="Download" alt="Download">filter</a>
             </section>
         </div>
     </header>
@@ -32,7 +31,6 @@
             Header content goes here
           </div>
         </header>
-
         <nav id="icon-with-text-demo" class="mdc-temporary-drawer__content mdc-list">
           <a class="mdc-list-item" href="#" >
             <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
@@ -67,52 +65,28 @@
       </nav>
     </main>-->
 
-    <script type="text/javascript" src="cordova.js"></script>
-
-    <script type="text/javascript">
-    document.addEventListener('deviceready', () => {
-      const permissions = cordova.plugins.permissions;
-      permissions.requestPermission(permissions.CAMERA, function(){
-        console.warn('Bom!');
-      }, function(){
-        console.warn('Ruim...');
-        });
-     });
-    </script>
 
     <video width="100%" class="mdc-toolbar-fixed-adjust" autoplay></video>
 
-    <script>
-      var errorCallback = function(e) {
-        console.log('Reeeejected!', e);
-      };
-
-      // Not showing vendor prefixes.
-      var constraints = {video: true};
-
-      navigator.webkitGetUserMedia(constraints, function(localMediaStream) {
-        var video = document.querySelector('video');
-        video.src = window.URL.createObjectURL(localMediaStream);
-
-        // Note: onloadedmetadata doesn't fire in Chrome when using it with getUserMedia.
-        // See crbug.com/110938.
-        video.onloadedmetadata = function(e) {
-          // Ready to go. Do some stuff.
-        };
-      }, errorCallback);
-    </script>
+    <!--<div class="mdc-slider" tabindex="0" role="slider"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+        aria-label="Select Value">
+      <div class="mdc-slider__track-container">
+        <div class="mdc-slider__track"></div>
+      </div>
+      <div class="mdc-slider__thumb-container">
+        <svg class="mdc-slider__thumb" width="21" height="21">
+          <circle cx="10.5" cy="10.5" r="7.875"></circle>
+        </svg>
+        <div class="mdc-slider__focus-ring"></div>
+      </div>
+    </div>-->
 
 
+    <script type="text/javascript" src="cordova.js"></script>
     <script src="node_modules/material-components-web/dist/material-components-web.js"></script>
-    <script>mdc.autoInit()</script>
-    <script>
-        let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
-        document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+    <script type="text/javascript">
+        MainController.Initialize();
     </script>
-
-    <!--<script type="text/javascript" src="cordova.js"></script>-->
-    <!--<script type="text/javascript" src="CameraPreview.js"></script>-->
-    <!--<script type="text/javascript" src="js/index.js"></script>-->
-
   </body>
 </html>

@@ -1,74 +1,53 @@
-var app = {
-  startCameraAbove: function(){
-    CameraPreview.startCamera({x: 50, y: 50, width: 300, height: 300, toBack: false, previewDrag: true, tapPhoto: true});
-  },
+var MainController = (function(){
 
-  startCameraBelow: function(){
-    CameraPreview.startCamera({x: 50, y: 50, width: 300, height:300, camera: "front", tapPhoto: true, previewDrag: false, toBack: true});
-  },
+  var self = { };
 
-  stopCamera: function(){
-    CameraPreview.stopCamera();
-  },
+  self.videoStream;
 
-  takePicture: function(){
-    CameraPreview.takePicture(function(imgData){
-      document.getElementById('originalPicture').src = 'data:image/jpeg;base64,' + imgData;
-    });
-  },
+  self.Initialize = function(){
 
-  switchCamera: function(){
-    CameraPreview.switchCamera();
-  },
-
-  show: function(){
-    CameraPreview.show();
-  },
-
-  hide: function(){
-    CameraPreview.hide();
-  },
-
-  changeColorEffect: function(){
-    var effect = document.getElementById('selectColorEffect').value;
-    CameraPreview.setColorEffect(effect);
-  },
-
-  changeFlashMode: function(){
-    var mode = document.getElementById('selectFlashMode').value;
-    CameraPreview.setFlashMode(mode);
-  },
-
-  changeZoom: function(){
-    var zoom = document.getElementById('zoomSlider').value;
-    document.getElementById('zoomValue').innerHTML = zoom;
-    CameraPreview.setZoom(zoom);
-  },
-
-  changePreviewSize: function(){
-    window.smallPreview = !window.smallPreview;
-    if(window.smallPreview){
-      CameraPreview.setPreviewSize({width: 100, height: 100});
-    }else{
-      CameraPreview.setPreviewSize({width: window.screen.width, height: window.screen.height});
-    }
-  },
-
-  showSupportedPictureSizes: function(){
-    CameraPreview.getSupportedPictureSizes(function(dimensions){
-      dimensions.forEach(function(dimension) {
-        console.log(dimension.width + 'x' + dimension.height);
+    InitMdc();
+    if(typeof(cordova) !== "undefined"){
+      document.addEventListener('deviceready', function(){
+        RequestCameraPermission(RequestUserMedia, console.log);
       });
-    });
-  },
+    }
+    else{
+      RequestUserMedia();
+    }
 
-  init: function(){
-    this.startCameraBelow();
-    // legacy - not sure if this was supposed to fix anything
-    //window.addEventListener('orientationchange', this.onStopCamera, false);
-  }
-};
+  };
 
-document.addEventListener('deviceready', function(){	
-  app.init();
-}, false);
+  var InitMdc = function(){
+    
+    mdc.autoInit()
+
+    let drawer = new mdc.drawer.MDCTemporaryDrawer(document.querySelector('.mdc-temporary-drawer'));
+    document.querySelector('.menu').addEventListener('click', () => drawer.open = true);
+    // const slider = new mdc.slider.MDCSlider(document.querySelector('.mdc-slider'));
+  };
+
+  var RequestCameraPermission = function(callback, fallback){
+    const permissions = cordova.plugins.permissions;
+    permissions.requestPermission(permissions.CAMERA, callback, fallback);
+  };
+
+  var RequestUserMedia = function(){
+    var fallback = function(e) {
+      console.log('Deu ruim!', e);
+    };
+
+    var callback = function(mediaStream){
+      self.videoStream = mediaStream;
+      var video = document.querySelector('video');
+      video.src = window.URL.createObjectURL(self.videoStream);
+    };
+
+    var constraints = { video: true};
+
+    navigator.mediaDevices.getUserMedia(constraints).then(callback).catch(fallback);
+    
+    };
+
+  return self;
+})();
